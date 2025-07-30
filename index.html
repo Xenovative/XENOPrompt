@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Generator - Video & Photo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <div class="language-selector">
+                    <select id="language-select" class="language-dropdown">
+                        <option value="en">English</option>
+                        <option value="zh-TW">繁體中文</option>
+                    </select>
+                </div>
+            </div>
+            <div class="header-content">
+                <div class="logo-title-container">
+                    <img src="assets/xenovative.png" alt="Xenovative Logo" class="company-logo">
+                    <div class="title-section">
+                        <h1><i class="fas fa-camera"></i> <span data-i18n="title">AI Prompt Generator</span></h1>
+                        <p data-i18n="subtitle">Create stunning prompts for video and photo generation</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="prompt-builder">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="video">
+                        <i class="fas fa-video"></i> <span data-i18n="video-tab">Video Prompts</span>
+                    </button>
+                    <button class="tab-btn" data-tab="photo">
+                        <i class="fas fa-camera"></i> <span data-i18n="photo-tab">Photo Prompts</span>
+                    </button>
+                </div>
+
+                <div class="tab-content active" id="video-tab">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="video-objects">
+                                <i class="fas fa-user"></i> <span data-i18n="objects-label">Objects/Protagonists</span>
+                            </label>
+                            <select id="video-objects" class="form-select">
+                                <option value="">Select or type custom...</option>
+                                <option value="person">Person</option>
+                                <option value="woman">Woman</option>
+                                <option value="man">Man</option>
+                                <option value="child">Child</option>
+                                <option value="elderly person">Elderly person</option>
+                                <option value="athlete">Athlete</option>
+                                <option value="dancer">Dancer</option>
+                                <option value="musician">Musician</option>
+                                <option value="chef">Chef</option>
+                                <option value="artist">Artist</option>
+                                <option value="animal">Animal</option>
+                                <option value="cat">Cat</option>
+                                <option value="dog">Dog</option>
+                                <option value="bird">Bird</option>
+                                <option value="car">Car</option>
+                                <option value="robot">Robot</option>
+                                <option value="spaceship">Spaceship</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="video-objects-custom" class="form-input custom-input" placeholder="Enter custom object/protagonist">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="video-actions">
+                                <i class="fas fa-running"></i> <span data-i18n="actions-label">Actions</span>
+                            </label>
+                            <select id="video-actions" class="form-select">
+                                <option value="">Select action...</option>
+                                <option value="walking">Walking</option>
+                                <option value="running">Running</option>
+                                <option value="dancing">Dancing</option>
+                                <option value="jumping">Jumping</option>
+                                <option value="flying">Flying</option>
+                                <option value="swimming">Swimming</option>
+                                <option value="cooking">Cooking</option>
+                                <option value="painting">Painting</option>
+                                <option value="singing">Singing</option>
+                                <option value="playing">Playing</option>
+                                <option value="working">Working</option>
+                                <option value="sleeping">Sleeping</option>
+                                <option value="eating">Eating</option>
+                                <option value="talking">Talking</option>
+                                <option value="laughing">Laughing</option>
+                                <option value="crying">Crying</option>
+                                <option value="fighting">Fighting</option>
+                                <option value="hugging">Hugging</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="video-actions-custom" class="form-input custom-input" placeholder="Enter custom action">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="video-angles">
+                                <i class="fas fa-video"></i> <span data-i18n="angles-label">Camera Angles</span>
+                            </label>
+                            <select id="video-angles" class="form-select">
+                                <option value="">Select angle...</option>
+                                <option value="close-up">Close-up</option>
+                                <option value="medium shot">Medium shot</option>
+                                <option value="wide shot">Wide shot</option>
+                                <option value="extreme close-up">Extreme close-up</option>
+                                <option value="bird's eye view">Bird's eye view</option>
+                                <option value="low angle">Low angle</option>
+                                <option value="high angle">High angle</option>
+                                <option value="dutch angle">Dutch angle</option>
+                                <option value="over the shoulder">Over the shoulder</option>
+                                <option value="tracking shot">Tracking shot</option>
+                                <option value="dolly zoom">Dolly zoom</option>
+                                <option value="handheld">Handheld</option>
+                                <option value="static shot">Static shot</option>
+                                <option value="panning">Panning</option>
+                                <option value="tilting">Tilting</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="video-angles-custom" class="form-input custom-input" placeholder="Enter custom camera angle">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="video-environments">
+                                <i class="fas fa-globe"></i> <span data-i18n="environments-label">Environments</span>
+                            </label>
+                            <select id="video-environments" class="form-select">
+                                <option value="">Select environment...</option>
+                                <option value="forest">Forest</option>
+                                <option value="beach">Beach</option>
+                                <option value="city">City</option>
+                                <option value="mountain">Mountain</option>
+                                <option value="desert">Desert</option>
+                                <option value="space">Space</option>
+                                <option value="underwater">Underwater</option>
+                                <option value="kitchen">Kitchen</option>
+                                <option value="bedroom">Bedroom</option>
+                                <option value="office">Office</option>
+                                <option value="studio">Studio</option>
+                                <option value="park">Park</option>
+                                <option value="street">Street</option>
+                                <option value="cafe">Cafe</option>
+                                <option value="library">Library</option>
+                                <option value="gym">Gym</option>
+                                <option value="garden">Garden</option>
+                                <option value="rooftop">Rooftop</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="video-environments-custom" class="form-input custom-input" placeholder="Enter custom environment">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="video-elements">
+                                <i class="fas fa-palette"></i> <span data-i18n="elements-label">Visual Elements</span>
+                            </label>
+                            <select id="video-elements" class="form-select">
+                                <option value="">Select elements...</option>
+                                <option value="dramatic lighting">Dramatic lighting</option>
+                                <option value="soft lighting">Soft lighting</option>
+                                <option value="neon lights">Neon lights</option>
+                                <option value="golden hour">Golden hour</option>
+                                <option value="blue hour">Blue hour</option>
+                                <option value="rain">Rain</option>
+                                <option value="snow">Snow</option>
+                                <option value="fog">Fog</option>
+                                <option value="fire">Fire</option>
+                                <option value="smoke">Smoke</option>
+                                <option value="particles">Particles</option>
+                                <option value="lens flare">Lens flare</option>
+                                <option value="motion blur">Motion blur</option>
+                                <option value="depth of field">Depth of field</option>
+                                <option value="reflections">Reflections</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="video-elements-custom" class="form-input custom-input" placeholder="Enter custom visual element">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="video-styles">
+                                <i class="fas fa-brush"></i> <span data-i18n="styles-label">Styles</span>
+                            </label>
+                            <select id="video-styles" class="form-select">
+                                <option value="">Select style...</option>
+                                <option value="cinematic">Cinematic</option>
+                                <option value="documentary">Documentary</option>
+                                <option value="anime">Anime</option>
+                                <option value="cartoon">Cartoon</option>
+                                <option value="realistic">Realistic</option>
+                                <option value="surreal">Surreal</option>
+                                <option value="vintage">Vintage</option>
+                                <option value="modern">Modern</option>
+                                <option value="futuristic">Futuristic</option>
+                                <option value="noir">Film Noir</option>
+                                <option value="horror">Horror</option>
+                                <option value="comedy">Comedy</option>
+                                <option value="romance">Romance</option>
+                                <option value="action">Action</option>
+                                <option value="fantasy">Fantasy</option>
+                                <option value="sci-fi">Sci-Fi</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="video-styles-custom" class="form-input custom-input" placeholder="Enter custom style">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="video-proportions">
+                                <i class="fas fa-expand-arrows-alt"></i> <span data-i18n="proportions-label">Aspect Ratio</span>
+                            </label>
+                            <select id="video-proportions" class="form-select">
+                                <option value="">Select ratio...</option>
+                                <option value="16:9">16:9 (Widescreen)</option>
+                                <option value="9:16">9:16 (Vertical/Mobile)</option>
+                                <option value="1:1">1:1 (Square)</option>
+                                <option value="4:3">4:3 (Traditional)</option>
+                                <option value="21:9">21:9 (Ultra-wide)</option>
+                                <option value="2.35:1">2.35:1 (Anamorphic)</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="video-proportions-custom" class="form-input custom-input" placeholder="Enter custom aspect ratio">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="video-other">
+                                <i class="fas fa-plus"></i> <span data-i18n="other-label">Other Elements</span>
+                            </label>
+                            <textarea id="video-other" class="form-textarea" placeholder="Add any additional details, mood, colors, or specific requirements..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="photo-tab">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="photo-objects">
+                                <i class="fas fa-user"></i> <span data-i18n="objects-label">Objects/Protagonists</span>
+                            </label>
+                            <select id="photo-objects" class="form-select">
+                                <option value="">Select or type custom...</option>
+                                <option value="portrait of a person">Portrait of a person</option>
+                                <option value="woman">Woman</option>
+                                <option value="man">Man</option>
+                                <option value="child">Child</option>
+                                <option value="elderly person">Elderly person</option>
+                                <option value="model">Model</option>
+                                <option value="businessman">Businessman</option>
+                                <option value="artist">Artist</option>
+                                <option value="scientist">Scientist</option>
+                                <option value="athlete">Athlete</option>
+                                <option value="animal">Animal</option>
+                                <option value="landscape">Landscape</option>
+                                <option value="building">Building</option>
+                                <option value="food">Food</option>
+                                <option value="product">Product</option>
+                                <option value="flower">Flower</option>
+                                <option value="abstract concept">Abstract concept</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="photo-objects-custom" class="form-input custom-input" placeholder="Enter custom object/protagonist">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-actions">
+                                <i class="fas fa-running"></i> <span data-i18n="actions-label">Actions/Poses</span>
+                            </label>
+                            <select id="photo-actions" class="form-select">
+                                <option value="">Select action/pose...</option>
+                                <option value="standing">Standing</option>
+                                <option value="sitting">Sitting</option>
+                                <option value="walking">Walking</option>
+                                <option value="running">Running</option>
+                                <option value="jumping">Jumping</option>
+                                <option value="dancing">Dancing</option>
+                                <option value="laughing">Laughing</option>
+                                <option value="smiling">Smiling</option>
+                                <option value="thinking">Thinking</option>
+                                <option value="working">Working</option>
+                                <option value="reading">Reading</option>
+                                <option value="looking away">Looking away</option>
+                                <option value="looking at camera">Looking at camera</option>
+                                <option value="hands on hips">Hands on hips</option>
+                                <option value="crossed arms">Crossed arms</option>
+                                <option value="peaceful">Peaceful</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="photo-actions-custom" class="form-input custom-input" placeholder="Enter custom action/pose">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-angles">
+                                <i class="fas fa-camera"></i> <span data-i18n="angles-label">Camera Angles</span>
+                            </label>
+                            <select id="photo-angles" class="form-select">
+                                <option value="">Select angle...</option>
+                                <option value="portrait">Portrait</option>
+                                <option value="close-up">Close-up</option>
+                                <option value="medium shot">Medium shot</option>
+                                <option value="full body">Full body</option>
+                                <option value="headshot">Headshot</option>
+                                <option value="profile">Profile</option>
+                                <option value="three-quarter view">Three-quarter view</option>
+                                <option value="bird's eye view">Bird's eye view</option>
+                                <option value="low angle">Low angle</option>
+                                <option value="high angle">High angle</option>
+                                <option value="eye level">Eye level</option>
+                                <option value="macro">Macro</option>
+                                <option value="wide angle">Wide angle</option>
+                                <option value="telephoto">Telephoto</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="photo-angles-custom" class="form-input custom-input" placeholder="Enter custom camera angle">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-environments">
+                                <i class="fas fa-globe"></i> <span data-i18n="environments-label">Environments</span>
+                            </label>
+                            <select id="photo-environments" class="form-select">
+                                <option value="">Select environment...</option>
+                                <option value="studio">Studio</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="forest">Forest</option>
+                                <option value="beach">Beach</option>
+                                <option value="city street">City street</option>
+                                <option value="mountain">Mountain</option>
+                                <option value="desert">Desert</option>
+                                <option value="park">Park</option>
+                                <option value="cafe">Cafe</option>
+                                <option value="office">Office</option>
+                                <option value="home">Home</option>
+                                <option value="library">Library</option>
+                                <option value="museum">Museum</option>
+                                <option value="rooftop">Rooftop</option>
+                                <option value="garden">Garden</option>
+                                <option value="minimalist background">Minimalist background</option>
+                                <option value="white background">White background</option>
+                                <option value="black background">Black background</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="photo-environments-custom" class="form-input custom-input" placeholder="Enter custom environment">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-elements">
+                                <i class="fas fa-palette"></i> <span data-i18n="elements-label">Lighting & Elements</span>
+                            </label>
+                            <select id="photo-elements" class="form-select">
+                                <option value="">Select elements...</option>
+                                <option value="natural lighting">Natural lighting</option>
+                                <option value="studio lighting">Studio lighting</option>
+                                <option value="soft lighting">Soft lighting</option>
+                                <option value="dramatic lighting">Dramatic lighting</option>
+                                <option value="golden hour">Golden hour</option>
+                                <option value="blue hour">Blue hour</option>
+                                <option value="backlit">Backlit</option>
+                                <option value="rim lighting">Rim lighting</option>
+                                <option value="side lighting">Side lighting</option>
+                                <option value="harsh shadows">Harsh shadows</option>
+                                <option value="soft shadows">Soft shadows</option>
+                                <option value="no shadows">No shadows</option>
+                                <option value="bokeh">Bokeh</option>
+                                <option value="depth of field">Depth of field</option>
+                                <option value="sharp focus">Sharp focus</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="photo-elements-custom" class="form-input custom-input" placeholder="Enter custom visual element">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-styles">
+                                <i class="fas fa-brush"></i> <span data-i18n="styles-label">Photography Styles</span>
+                            </label>
+                            <select id="photo-styles" class="form-select">
+                                <option value="">Select style...</option>
+                                <option value="professional photography">Professional photography</option>
+                                <option value="portrait photography">Portrait photography</option>
+                                <option value="fashion photography">Fashion photography</option>
+                                <option value="street photography">Street photography</option>
+                                <option value="landscape photography">Landscape photography</option>
+                                <option value="documentary photography">Documentary photography</option>
+                                <option value="fine art photography">Fine art photography</option>
+                                <option value="commercial photography">Commercial photography</option>
+                                <option value="vintage style">Vintage style</option>
+                                <option value="modern style">Modern style</option>
+                                <option value="minimalist">Minimalist</option>
+                                <option value="artistic">Artistic</option>
+                                <option value="candid">Candid</option>
+                                <option value="posed">Posed</option>
+                                <option value="black and white">Black and white</option>
+                                <option value="vibrant colors">Vibrant colors</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="photo-styles-custom" class="form-input custom-input" placeholder="Enter custom style">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-proportions">
+                                <i class="fas fa-expand-arrows-alt"></i> <span data-i18n="proportions-label">Aspect Ratio</span>
+                            </label>
+                            <select id="photo-proportions" class="form-select">
+                                <option value="">Select ratio...</option>
+                                <option value="1:1">1:1 (Square)</option>
+                                <option value="4:3">4:3 (Standard)</option>
+                                <option value="3:2">3:2 (Classic 35mm)</option>
+                                <option value="16:9">16:9 (Widescreen)</option>
+                                <option value="9:16">9:16 (Vertical/Portrait)</option>
+                                <option value="5:4">5:4 (Large format)</option>
+                                <option value="2:3">2:3 (Portrait)</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="photo-proportions-custom" class="form-input custom-input" placeholder="Enter custom aspect ratio">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-other">
+                                <i class="fas fa-plus"></i> <span data-i18n="other-label">Other Elements</span>
+                            </label>
+                            <textarea id="photo-other" class="form-textarea" placeholder="Add any additional details, mood, colors, camera settings, or specific requirements..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="generate-btn" class="btn btn-primary">
+                        <i class="fas fa-magic"></i> <span data-i18n="generate-btn">Generate with AI</span>
+                    </button>
+                    <button id="clear-btn" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> <span data-i18n="clear-btn">Clear All</span>
+                    </button>
+                    <button id="random-btn" class="btn btn-accent">
+                        <i class="fas fa-dice"></i> <span data-i18n="random-btn">Random</span>
+                    </button>
+                    <button id="settings-btn" class="btn btn-settings">
+                        <i class="fas fa-cog"></i> <span data-i18n="settings-btn">LLM Settings</span>
+                    </button>
+                </div>
+
+                <div class="prompt-output">
+                    <div class="output-header">
+                        <h3><i class="fas fa-file-text"></i> <span data-i18n="prompt-title">Generated Prompt</span></h3>
+                        <button id="copy-btn" class="btn btn-copy">
+                            <i class="fas fa-copy"></i> <span data-i18n="copy-btn">Copy</span>
+                        </button>
+                    </div>
+                    <div id="prompt-result" class="prompt-text empty">
+                        <span data-i18n="prompt-placeholder">Your generated prompt will appear here...</span>
+                    </div>
+                </div>
+
+                <!-- LLM Settings Modal -->
+                <div id="settings-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-cog"></i> LLM Settings</h3>
+                            <button id="close-modal" class="btn-close">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="settings-section">
+                                <h4><i class="fas fa-robot"></i> AI Provider</h4>
+                                <select id="llm-provider" class="form-select">
+                                    <option value="auto">Auto (Try all available)</option>
+                                    <option value="openai">OpenAI (GPT-3.5/4)</option>
+                                    <option value="ollama">Ollama (Local)</option>
+                                    <option value="local">Local LLM API</option>
+                                    <option value="basic">Basic (No AI)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="settings-section" id="openai-settings">
+                                <h4><i class="fas fa-key"></i> OpenAI API Key</h4>
+                                <input type="password" id="openai-key" class="form-input" placeholder="sk-...">
+                                <p class="settings-note">
+                                    <i class="fas fa-info-circle"></i>
+                                    Your API key is stored locally and never sent to our servers.
+                                    <a href="https://platform.openai.com/api-keys" target="_blank">Get your API key here</a>
+                                </p>
+                            </div>
+                            
+                            <div class="settings-section" id="ollama-settings">
+                                <h4><i class="fas fa-server"></i> Ollama Settings</h4>
+                                <input type="text" id="ollama-url" class="form-input" placeholder="http://localhost:11434" value="http://localhost:11434">
+                                <input type="text" id="ollama-model" class="form-input" placeholder="Model name (e.g., llama2, mistral)" value="llama2">
+                                <p class="settings-note">
+                                    <i class="fas fa-info-circle"></i>
+                                    Make sure Ollama is running locally. <a href="https://ollama.ai" target="_blank">Download Ollama</a>
+                                </p>
+                            </div>
+                            
+                            <div class="settings-section" id="local-settings">
+                                <h4><i class="fas fa-network-wired"></i> Local LLM API</h4>
+                                <input type="text" id="local-url" class="form-input" placeholder="http://localhost:8080" value="http://localhost:8080">
+                                <p class="settings-note">
+                                    <i class="fas fa-info-circle"></i>
+                                    For local LLM servers with OpenAI-compatible API (like text-generation-webui, LocalAI, etc.)
+                                </p>
+                            </div>
+                            
+                            <div class="settings-section">
+                                <h4><i class="fas fa-sliders-h"></i> Generation Settings</h4>
+                                <label for="temperature">Creativity Level:</label>
+                                <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7" class="slider">
+                                <span id="temperature-value">0.7</span>
+                                
+                                <label for="max-tokens">Max Length:</label>
+                                <input type="range" id="max-tokens" min="100" max="500" step="50" value="300" class="slider">
+                                <span id="max-tokens-value">300</span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="test-llm" class="btn btn-secondary">
+                                <i class="fas fa-flask"></i> Test Connection
+                            </button>
+                            <button id="save-settings" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <h3><i class="fas fa-lightbulb"></i> <span data-i18n="tips-title">Tips for Better AI Prompts</span></h3>
+                    <ul>
+                        <li data-i18n="tip-1">AI Enhancement: The AI will transform your selections into professional prompts</li>
+                        <li data-i18n="tip-2">Be specific: More detailed selections lead to better AI-generated prompts</li>
+                        <li data-i18n="tip-3">Combine elements: Mix different categories for unique results</li>
+                        <li data-i18n="tip-4">Use "Other Elements": Add specific details for the AI to incorporate</li>
+                        <li data-i18n="tip-5">Try different providers: Each AI model has its own style and strengths</li>
+                        <li data-i18n="tip-6">Experiment: Use the random generator for inspiration</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 XENO AI Prompt Generator. Powered by Xenovative Limited.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
