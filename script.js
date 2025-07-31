@@ -18,16 +18,24 @@ let currentTab = 'video';
 // Current language
 let currentLanguage = 'en';
 
-// LLM Settings
+// LLM Settings - Will be merged with injected config if available
 let llmSettings = {
-    provider: 'auto',
+    provider: 'openrouter',
     openaiKey: '',
+    openrouterKey: '',
+    openrouterModel: 'anthropic/claude-3.5-sonnet',
     ollamaUrl: 'http://localhost:11434',
     ollamaModel: 'llama2',
     localUrl: 'http://localhost:8080',
     temperature: 0.7,
     maxTokens: 300
 };
+
+// Apply injected configuration if available
+if (window.API_CONFIG) {
+    llmSettings = { ...llmSettings, ...window.API_CONFIG };
+    console.log('Applied injected API configuration');
+}
 
 // Internationalization translations
 const translations = {
@@ -280,6 +288,9 @@ ${other ? `Additional Details: ${other}` : ''}`;
         case 'openai':
             providers = [() => callOpenAI(systemPrompt, userPrompt)];
             break;
+        case 'openrouter':
+            providers = [() => callOpenRouter(systemPrompt, userPrompt)];
+            break;
         case 'ollama':
             providers = [() => callOllama(systemPrompt, userPrompt)];
             break;
@@ -292,6 +303,7 @@ ${other ? `Additional Details: ${other}` : ''}`;
         default: // 'auto'
             providers = [
                 () => callOpenAI(systemPrompt, userPrompt),
+                () => callOpenRouter(systemPrompt, userPrompt),
                 () => callOllama(systemPrompt, userPrompt),
                 () => callLocalLLM(systemPrompt, userPrompt)
             ];
@@ -337,6 +349,40 @@ async function callOpenAI(systemPrompt, userPrompt) {
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(`OpenAI API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+    }
+    
+    const data = await response.json();
+    return data.choices[0]?.message?.content;
+}
+
+// OpenRouter API call (requires API key)
+async function callOpenRouter(systemPrompt, userPrompt) {
+    if (!llmSettings.openrouterKey) {
+        throw new Error('OpenRouter API key not found');
+    }
+    
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${llmSettings.openrouterKey}`,
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'AI Prompt Generator'
+        },
+        body: JSON.stringify({
+            model: llmSettings.openrouterModel,
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+            ],
+            max_tokens: llmSettings.maxTokens,
+            temperature: llmSettings.temperature
+        })
+    });
+    
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`OpenRouter API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
     }
     
     const data = await response.json();
@@ -729,11 +775,13 @@ function closeSettings() {
 
 function updateProviderSettings(provider) {
     const openaiSettings = document.getElementById('openai-settings');
+    const openrouterSettings = document.getElementById('openrouter-settings');
     const ollamaSettings = document.getElementById('ollama-settings');
     const localSettings = document.getElementById('local-settings');
     
     // Hide all provider-specific settings
     openaiSettings.classList.add('hidden');
+    openrouterSettings.classList.add('hidden');
     ollamaSettings.classList.add('hidden');
     localSettings.classList.add('hidden');
     
@@ -743,9 +791,13 @@ function updateProviderSettings(provider) {
         case 'auto':
             openaiSettings.classList.remove('hidden');
             if (provider === 'auto') {
+                openrouterSettings.classList.remove('hidden');
                 ollamaSettings.classList.remove('hidden');
                 localSettings.classList.remove('hidden');
             }
+            break;
+        case 'openrouter':
+            openrouterSettings.classList.remove('hidden');
             break;
         case 'ollama':
             ollamaSettings.classList.remove('hidden');
@@ -759,6 +811,8 @@ function updateProviderSettings(provider) {
 function loadSettingsToUI() {
     document.getElementById('llm-provider').value = llmSettings.provider;
     document.getElementById('openai-key').value = llmSettings.openaiKey;
+    document.getElementById('openrouter-key').value = llmSettings.openrouterKey;
+    document.getElementById('openrouter-model').value = llmSettings.openrouterModel;
     document.getElementById('ollama-url').value = llmSettings.ollamaUrl;
     document.getElementById('ollama-model').value = llmSettings.ollamaModel;
     document.getElementById('local-url').value = llmSettings.localUrl;
@@ -773,6 +827,8 @@ function loadSettingsToUI() {
 function saveSettings() {
     llmSettings.provider = document.getElementById('llm-provider').value;
     llmSettings.openaiKey = document.getElementById('openai-key').value;
+    llmSettings.openrouterKey = document.getElementById('openrouter-key').value;
+    llmSettings.openrouterModel = document.getElementById('openrouter-model').value;
     llmSettings.ollamaUrl = document.getElementById('ollama-url').value;
     llmSettings.ollamaModel = document.getElementById('ollama-model').value;
     llmSettings.localUrl = document.getElementById('local-url').value;
@@ -782,6 +838,7 @@ function saveSettings() {
     // Save to localStorage
     localStorage.setItem('llmSettings', JSON.stringify(llmSettings));
     localStorage.setItem('openai_api_key', llmSettings.openaiKey);
+    localStorage.setItem('openrouter_api_key', llmSettings.openrouterKey);
     
     showNotification('Settings saved successfully!', 'success');
     closeSettings();
@@ -797,10 +854,15 @@ function loadSettings() {
         }
     }
     
-    // Load OpenAI key separately for security
-    const savedKey = localStorage.getItem('openai_api_key');
-    if (savedKey) {
-        llmSettings.openaiKey = savedKey;
+    // Load API keys separately for security
+    const savedOpenAIKey = localStorage.getItem('openai_api_key');
+    if (savedOpenAIKey) {
+        llmSettings.openaiKey = savedOpenAIKey;
+    }
+    
+    const savedOpenRouterKey = localStorage.getItem('openrouter_api_key');
+    if (savedOpenRouterKey) {
+        llmSettings.openrouterKey = savedOpenRouterKey;
     }
 }
 
@@ -821,6 +883,9 @@ async function testLLMConnection() {
             case 'openai':
                 result = await callOpenAI(systemPrompt, testPrompt);
                 break;
+            case 'openrouter':
+                result = await callOpenRouter(systemPrompt, testPrompt);
+                break;
             case 'ollama':
                 result = await callOllama(systemPrompt, testPrompt);
                 break;
@@ -831,6 +896,7 @@ async function testLLMConnection() {
                 // Try all providers
                 const providers = [
                     () => callOpenAI(systemPrompt, testPrompt),
+                    () => callOpenRouter(systemPrompt, testPrompt),
                     () => callOllama(systemPrompt, testPrompt),
                     () => callLocalLLM(systemPrompt, testPrompt)
                 ];

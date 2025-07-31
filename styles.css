@@ -706,3 +706,8 @@ body {
     background: #fef3c7;
     color: #92400e;
 }
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}

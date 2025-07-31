@@ -467,6 +467,7 @@
                                 <select id="llm-provider" class="form-select">
                                     <option value="auto">Auto (Try all available)</option>
                                     <option value="openai">OpenAI (GPT-3.5/4)</option>
+                                    <option value="openrouter">OpenRouter (Multiple Models)</option>
                                     <option value="ollama">Ollama (Local)</option>
                                     <option value="local">Local LLM API</option>
                                     <option value="basic">Basic (No AI)</option>
@@ -480,6 +481,26 @@
                                     <i class="fas fa-info-circle"></i>
                                     Your API key is stored locally and never sent to our servers.
                                     <a href="https://platform.openai.com/api-keys" target="_blank">Get your API key here</a>
+                                </p>
+                            </div>
+                            
+                            <div class="settings-section" id="openrouter-settings">
+                                <h4><i class="fas fa-route"></i> OpenRouter Settings</h4>
+                                <input type="password" id="openrouter-key" class="form-input" placeholder="sk-or-v1-...">
+                                <select id="openrouter-model" class="form-select">
+                                    <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                                    <option value="openai/gpt-4o">GPT-4o</option>
+                                    <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+                                    <option value="meta-llama/llama-3.1-405b-instruct">Llama 3.1 405B</option>
+                                    <option value="meta-llama/llama-3.1-70b-instruct">Llama 3.1 70B</option>
+                                    <option value="google/gemini-pro-1.5">Gemini Pro 1.5</option>
+                                    <option value="mistralai/mistral-large">Mistral Large</option>
+                                    <option value="perplexity/llama-3.1-sonar-large-128k-online">Perplexity Sonar Large</option>
+                                </select>
+                                <p class="settings-note">
+                                    <i class="fas fa-info-circle"></i>
+                                    Access multiple AI models through OpenRouter. Your API key is stored locally.
+                                    <a href="https://openrouter.ai/keys" target="_blank">Get your API key here</a>
                                 </p>
                             </div>
                             
@@ -543,6 +564,21 @@
         </footer>
     </div>
 
+    <!-- Configuration Section - Modify these values for deployment -->
+    <script>
+        // API Key Configuration - Set these values for pre-configured deployment
+        window.API_CONFIG = {
+            openaiKey: '', // Set your OpenAI API key here: 'sk-...'
+            openrouterKey: '', // Set your OpenRouter API key here: 'sk-or-v1-...'
+            openrouterModel: 'anthropic/claude-3.5-sonnet', // Default OpenRouter model
+            ollamaUrl: 'http://localhost:11434', // Ollama server URL
+            ollamaModel: 'llama2', // Default Ollama model
+            localUrl: 'http://localhost:8080', // Local LLM server URL
+            provider: 'openrouter', // Default provider: 'auto', 'openai', 'openrouter', 'ollama', 'local', 'basic'
+            temperature: 0.7, // Creativity level (0-1)
+            maxTokens: 300 // Maximum response length
+        };
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
