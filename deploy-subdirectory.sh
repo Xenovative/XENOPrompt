@@ -29,6 +29,15 @@ echo "Deployment path: $DEPLOY_PATH"
 echo "Copying files to $DEPLOY_PATH..."
 sudo cp -r ./* "$DEPLOY_PATH/"
 
+# Fix asset paths for subdirectory deployment
+echo "Fixing asset paths for subdirectory deployment..."
+sudo sed -i "
+    s|href=\"styles.css\"|href=\"/$SUBDIRECTORY/styles.css\"|g
+    s|src=\"assets/|src=\"/$SUBDIRECTORY/assets/|g
+    s|src=\"script.js\"|src=\"/$SUBDIRECTORY/script.js\"|g
+" "$DEPLOY_PATH/index.html"
+echo "✅ Asset paths updated for subdirectory deployment"
+
 # Inject API keys if provided
 if [ ! -z "$OPENAI_KEY" ] || [ ! -z "$OPENROUTER_KEY" ]; then
     echo "Injecting API keys into index.html..."
