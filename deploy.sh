@@ -53,20 +53,83 @@ sudo chmod -R 755 /var/www/ai-prompt-generator
 sudo tee /etc/nginx/sites-available/ai-prompt-generator <<EOF
 server {
     listen 80;
-    server_name $DOMAIN_NAME www.$DOMAIN_NAME;
+    server_name $DOMAIN_NAME;
     root /var/www/ai-prompt-generator;
     index index.html;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
 
     location / {
         try_files \$uri \$uri/ =404;
     }
+
+    # Cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)\$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied expired no-cache no-store private must-revalidate auth;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss;
 }
 EOF
 
+# Remove default site if it exists
+sudo rm -f /etc/nginx/sites-enabled/default
+
 # Enable the site
 sudo ln -sf /etc/nginx/sites-available/ai-prompt-generator /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
 
-# Enable firewall
-sudo ufw allow 'Nginx Full'
+# Test nginx configuration
+if sudo nginx -t; then
+    echo "✅ Nginx configuration is valid"
+    sudo systemctl reload nginx
+    echo "✅ Nginx reloaded successfully"
+else
+    echo "❌ Nginx configuration error - please check the config"
+    exit 1
+fi
+
+# Configure firewall (handle different systems)
+if command -v ufw >/dev/null 2>&1; then
+    # Ubuntu/Debian with ufw
+    sudo ufw allow 80/tcp
+    sudo ufw allow 443/tcp
+    echo "✅ UFW firewall rules added"
+elif command -v firewall-cmd >/dev/null 2>&1; then
+    # CentOS/RHEL with firewalld
+    sudo firewall-cmd --permanent --add-service=http
+    sudo firewall-cmd --permanent --add-service=https
+    sudo firewall-cmd --reload
+    echo "✅ Firewalld rules added"
+else
+    echo "⚠️  No firewall manager detected - you may need to manually open ports 80 and 443"
+fi
+
+echo ""
+echo "🎉 Deployment completed successfully!"
+echo ""
+echo "Your AI Prompt Generator is now available at:"
+echo "  http://$DOMAIN_NAME"
+echo ""
+echo "Next steps:"
+echo "1. Upload your files to /var/www/ai-prompt-generator/"
+echo "2. Configure your API keys using the settings modal or run ./configure-api-keys.sh"
+echo "3. Consider setting up SSL with Let's Encrypt:"
+echo "   sudo apt install certbot python3-certbot-nginx"
+echo "   sudo certbot --nginx -d $DOMAIN_NAME"
+echo ""
+echo "For subdirectory deployment (like /xenoprompt), you'll need to:"
+echo "1. Modify the Nginx location block"
+echo "2. Update the root path accordingly"
+echo "3. Ensure your DNS points to this server"
+echo ""
